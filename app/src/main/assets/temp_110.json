@@ -1,0 +1,24 @@
+[
+    {
+        "type": 4,
+        "align": "left",
+        "fontSize": 1,
+        "bold": 0,
+        "content": "",
+        "codes": [
+            {
+                "codeName": "扫描关注店铺",
+                "codeContent": "https://u.wechat.com/EAShRxVCPJrT3afT7ILMeIs"
+            },
+            {
+                "codeName": "支付宝收款码",
+                "codeContent": "HTTPS://QR.ALIPAY.COM/FKX01730BTIE5D4FIVBZ97?t=1558434138743"
+            },
+            {
+                "codeName": "微信收款码",
+                "codeContent": "wxp://f2f07wDDnL8dk6BkvMrklWEaq7klA90H4IBH"
+            }
+        ]
+    }
+]
+

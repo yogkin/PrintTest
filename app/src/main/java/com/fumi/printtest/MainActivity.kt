@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.printer.sdk.Barcode
 import com.printer.sdk.PrinterConstants
 import com.printer.sdk.PrinterInstance
@@ -20,7 +21,8 @@ class MainActivity : AppCompatActivity() {
     private val fontSizeNormal = 0
 
     val printData by lazy { Gson().fromJson(cmdStr, PrintData::class.java) }
-    val printer = initBlePrinter("DC:0D:30:8A:BD:ED")
+    val printer = initBlePrinter("00:15:83:CE:9E:32")
+//    val printer = initBlePrinter("DC:1D:30:32:DC:52")
 
     fun printLine() {
         printer?.setFont(0, fontSizeNormal, fontSizeNormal, 0, 0)
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val printer = initBlePrinter("DC:0D:30:8A:BD:ED")
+//        val printer = initBlePrinter("DC:0D:30:8A:BD:ED")
         printer?.openConnection()
         findViewById<View>(R.id.btn_click).setOnClickListener {
             printer?.apply {
@@ -51,10 +53,17 @@ class MainActivity : AppCompatActivity() {
 
                 //条形码
                 setPrinter(PrinterConstants.Command.ALIGN, PrinterConstants.Command.ALIGN_CENTER)
-                printBarCode(Barcode(PrinterConstants.BarcodeType.CODE128,0,0,0,printData.list.wave_picking_no))
+                printBarCode(
+                    Barcode(
+                        PrinterConstants.BarcodeType.CODE128,
+                        0,
+                        0,
+                        0,
+                        printData.list.wave_picking_no
+                    )
+                )
                 printEmptyLine()
                 printText("${printData.list.wave_picking_no}\n")
-
 
 
                 //快递公司
@@ -97,9 +106,18 @@ class MainActivity : AppCompatActivity() {
                 printLine()
                 //走纸
                 repeat(5) { printText("\n") }
-                cutPaper(0,0)
+                cutPaper(0, 0)
             }
 
+        }
+        findViewById<View>(R.id.btn_click2).setOnClickListener {
+            val inputStream = assets.open("temp_110.json")
+            val lenght = inputStream.available()
+            val buffer = ByteArray(lenght)
+            inputStream.read(buffer)
+            val result = String(buffer, charset("utf8"))
+            val data:List<PrintingModel> = Gson().fromJson(result, object : TypeToken<List<PrintingModel>>() {}.type)
+            PrintingHelper.print(printer,data, 1, true)
         }
     }
 

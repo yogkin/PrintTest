@@ -1,5 +1,6 @@
 package com.fumi.printtest
 
+import android.graphics.Bitmap
 import com.google.gson.Gson
 
 
@@ -43,4 +44,26 @@ data class OrderInfo(
     val problem_desc: String = "",
     val problem_name: String = "",
     val work_id: String = ""
+)
+
+class PrintingModel(
+    val type: Int,
+    val content: String,
+    val fontSize: Int,
+    val align: String,
+    val bold: Int,
+    val codes: List<PrintCodeModel>,
+    val contents: List<String>
+
+) {
+    var bitmap: Bitmap? = null
+}
+
+class PrintCodeModel(
+    val codeContent: String,
+    val codeName: String
+)
+
+class PrintListModel(
+    val list: List<PrintingModel>
 )
